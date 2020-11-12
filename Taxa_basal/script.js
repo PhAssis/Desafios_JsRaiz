@@ -6,15 +6,27 @@ const button = document.querySelector('.btn');
 const container = document.querySelector('.container');
 const messageResult = document.querySelector('.messageResult');
 
+factorValues = {
+  "masculino": {
+    "genre": 66.5,
+    "weight": 13.75,
+    "height": 5.0,
+    "age": 6.8,
+  },
+  "feminino": {
+    "genre": 665.1,
+    "weight": 9.56,
+    "height": 1.8,
+    "age": 4.7,
+  }
+}
+
 function calculaTmb(genre, height, weight, age) {
-  const formulaPartOne = parseFloat(`${genre === 'masculino' ? 66.5 : 665.1}`);
-  const formulaPartTwo = (`${genre === 'masculino' ? 13.75 : 9.56}` * weight);
-  const formulaPartThree = (`${genre === 'masculino' ? 5.0 : 1.8}` * height);
-  const formulaPartFour = (`${genre === 'masculino' ? 6.8 : 4.7}` * age);
-
-  const formulaResult = formulaPartOne + formulaPartTwo + formulaPartThree - formulaPartFour;
-
-  return formulaResult;
+  const genreFactor = factorValues[genre]['genre']
+  const weightFactor = ((factorValues[genre]['weight']) * weight);
+  const heightFactor = ((factorValues[genre]['height']) * height);
+  const ageFactor = ((factorValues[genre]['age']) * age);
+  return genreFactor + weightFactor + heightFactor - ageFactor;
 }
 
 function insertResult(genre, height, weight, age) {
@@ -29,7 +41,7 @@ function resultTMB() {
   const inputHeightValue = inputHeight.value;
   const inputWeightValue = inputWeight.value;
   const inputAgeValue = inputAge.value;
-  
+
   const inputGenreValue =
     [...inputGenre].filter(input => input.checked)[0].value;
   insertResult(inputGenreValue, inputHeightValue, inputWeightValue, inputAgeValue);
