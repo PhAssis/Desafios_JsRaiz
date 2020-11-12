@@ -4,18 +4,23 @@ const button = document.querySelector('.btn');
 const container = document.querySelector('.container');
 const messageResult = document.querySelector('.messageResult');
 
-
-
 const optionsMessage = {
-  underWeight: 'Abaixo do peso',
+  alertDangerMessage: {
+    underWeight: 'Abaixo do peso',
+    gradeObesityTwo: 'Obesidade grau 2',
+    gradeObesityThree: 'Obesidade grau 3'
+  },
   normalWeight: 'Peso normal',
   overweight: 'Sobrepeso',
   gradeObesityOne: 'Obesidade grau 1',
-  gradeObesityTwo: 'Obesidade grau 2',
-  gradeObesityThree: 'Obesidade grau 3'
 }
 
-const { underWeight, normalWeight, overweight, gradeObesityOne, gradeObesityTwo, gradeObesityThree } = optionsMessage;
+const { alertDangerMessage,
+  alertDangerMessage: { underWeight, gradeObesityTwo, gradeObesityThree },
+  normalWeight,
+  overweight,
+  gradeObesityOne
+} = optionsMessage;
 
 const informationsImc = [
   [valor => valor < 18.5, underWeight],
@@ -26,38 +31,32 @@ const informationsImc = [
   [valor => valor >= 40, gradeObesityThree]
 ];
 
-const alertMessage = {
-  danger: [underWeight, gradeObesityTwo, gradeObesityThree],
-  warning: [overweight, gradeObesityOne]
-}
-
 function calculationImc(weight, height) {
   const calculatedImc = weight / (height * height)
-  const result = informationsImc.find(fn => fn[0](calculatedImc))[1]
-  insertResultIntoDom(result)
+  const resultImc = informationsImc.find(fn => fn[0](calculatedImc))[1]
+  return resultImc;
 }
 
-function typeMessage(result) {
-  if (alertMessage.danger.includes(result)) {
-    return 'danger'
-  }
-  if (alertMessage.warning.includes(result)) {
-    return 'warning'
-  }
-}
+const typeMessage = (resultImc) =>
+  Object.values(alertDangerMessage).includes(resultImc)
+    ? 'danger'
+    : 'warning';
 
-function insertResultIntoDom(result) {
+function insertResultIntoDom(resultImc) {
   messageResult.innerHTML = '';
-  messageResult.innerHTML = `<div class="alert alert-${result === normalWeight ? 'primary' : typeMessage(result)} text-center" role="alert">
-  ${result}
-  `;
+  messageResult.innerHTML =
+    `<div class="alert alert-${resultImc === normalWeight ? 'primary' : typeMessage(resultImc)} text-center" role="alert">
+      ${resultImc}
+    `;
 }
 
-button.addEventListener('click', () => {
+function resultImc() {
   const inputHeightValue = inputHeight.value;
   const inputWeightValue = inputWeight.value;
-  calculationImc(inputWeightValue, inputHeightValue);
-})
+  insertResultIntoDom(calculationImc(inputWeightValue, inputHeightValue));
+}
+
+button.addEventListener('click', resultImc)
 
 
 
