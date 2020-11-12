@@ -4,24 +4,35 @@ const button = document.querySelector('.btn');
 const container = document.querySelector('.container');
 const messageResult = document.querySelector('.messageResult');
 
+
+
+const optionsMessage = {
+  underWeight: 'Abaixo do peso',
+  normalWeight: 'Peso normal',
+  overweight: 'Sobrepeso',
+  gradeObesityOne: 'Obesidade grau 1',
+  gradeObesityTwo: 'Obesidade grau 2',
+  gradeObesityThree: 'Obesidade grau 3'
+}
+
+const { underWeight, normalWeight, overweight, gradeObesityOne, gradeObesityTwo, gradeObesityThree } = optionsMessage;
+
 const informationsImc = [
-  [valor => valor < 18.5, 'Abaixo do peso'],
-  [valor => valor > 18.5 && valor < 24.9, 'Peso Normal'],
-  [valor => valor >= 25 && valor < 29.9, 'Sobrepeso'],
-  [valor => valor >= 30 && valor < 34.9, 'Obesidade grau 1'],
-  [valor => valor >= 35 && valor < 39.9, 'Obesidade grau 2'],
-  [valor => valor >= 40, 'Obesidade grau 3']
+  [valor => valor < 18.5, underWeight],
+  [valor => valor > 18.5 && valor < 24.9, normalWeight],
+  [valor => valor >= 25 && valor < 29.9, overweight],
+  [valor => valor >= 30 && valor < 34.9, gradeObesityOne],
+  [valor => valor >= 35 && valor < 39.9, gradeObesityTwo],
+  [valor => valor >= 40, gradeObesityThree]
 ];
 
 const alertMessage = {
-  danger: ['Abaixo do peso', 'Obesidade grau 2', 'Obesidade grau 3'],
-  warning: ['Sobrepeso', 'Obesidade grau 1']
+  danger: [underWeight, gradeObesityTwo, gradeObesityThree],
+  warning: [overweight, gradeObesityOne]
 }
 
-function calculationImc() {
-  const inputHeightValue = inputHeight.value;
-  const inputWeightValue = inputWeight.value;
-  const calculatedImc = inputWeightValue / (inputHeightValue * inputHeightValue)
+function calculationImc(weight, height) {
+  const calculatedImc = weight / (height * height)
   const result = informationsImc.find(fn => fn[0](calculatedImc))[1]
   insertResultIntoDom(result)
 }
@@ -37,12 +48,16 @@ function typeMessage(result) {
 
 function insertResultIntoDom(result) {
   messageResult.innerHTML = '';
-  messageResult.innerHTML = `<div class="alert alert-${result === 'Peso Normal' ? 'primary' : typeMessage(result)} text-center" role="alert">
-      ${result}
-    </div>`;
+  messageResult.innerHTML = `<div class="alert alert-${result === normalWeight ? 'primary' : typeMessage(result)} text-center" role="alert">
+  ${result}
+  `;
 }
 
-button.addEventListener('click', calculationImc)
+button.addEventListener('click', () => {
+  const inputHeightValue = inputHeight.value;
+  const inputWeightValue = inputWeight.value;
+  calculationImc(inputWeightValue, inputHeightValue);
+})
 
 
 
