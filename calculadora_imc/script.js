@@ -42,7 +42,7 @@ const informationsImc = [
 
 const calculationImc = (weight, height) => weight / (height * height);
 
-const selectTheMessage = (weight, height) => informationsImc.find(([fn]) => fn(calculationImc(weight, height)));
+const selectTheMessage = (weight, height) => informationsImc.find(([fn]) => fn(calculationImc(weight, height)))[1];
 
 const typeMessage = resultImc =>
   Object.values(alertDangerMessage).includes(resultImc)
