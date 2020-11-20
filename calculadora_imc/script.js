@@ -22,27 +22,28 @@ const { alertDangerMessage,
   gradeObesityOne
 } = optionsMessage;
 
-const getValueOfUnderWeight = valueIndexImc =>
-  calculatedValueImc => calculatedValueImc < valueIndexImc;
-
-const getValueOfGradeObesityThree = valueIndexImc =>
-  calculatedValueImc => calculatedValueImc < valueIndexImc;
+const getOneValue = valueIndexImc =>
+  calculatedValueImc =>
+    calculatedValueImc < valueIndexImc;
 
 const getBetweenValues = (valueIndexImcOne, valueIndexImcTwo) =>
-  calculatedValueImc => calculatedValueImc >= valueIndexImcOne && calculatedValueImc < valueIndexImcTwo;
+  calculatedValueImc =>
+    calculatedValueImc >= valueIndexImcOne && calculatedValueImc < valueIndexImcTwo;
 
 const informationsImc = [
-  [getValueOfUnderWeight(18.5), underWeight],
+  [getOneValue(18.5), underWeight],
   [getBetweenValues(18.5, 24.9), normalWeight],
   [getBetweenValues(25, 29.9), overweight],
   [getBetweenValues(30, 34.9), gradeObesityOne],
   [getBetweenValues(35, 39.9), gradeObesityTwo],
-  [getValueOfGradeObesityThree(40), gradeObesityThree]
+  [getOneValue(40), gradeObesityThree]
 ];
 
 const calculationImc = (weight, height) => weight / (height * height);
 
 const selectTheMessage = (weight, height) => informationsImc.find(([fn]) => fn(calculationImc(weight, height)))[1];
+
+console.log(selectTheMessage)
 
 const typeMessage = resultImc =>
   Object.values(alertDangerMessage).includes(resultImc)
