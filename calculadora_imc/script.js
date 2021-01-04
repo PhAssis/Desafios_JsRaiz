@@ -1,9 +1,3 @@
-const inputHeight = document.querySelector('.altura');
-const inputWeight = document.querySelector('.peso');
-const button = document.querySelector('.btn');
-const container = document.querySelector('.container');
-const messageResult = document.querySelector('.messageResult');
-
 const optionsMessage = {
   alertDangerMessage: {
     underWeight: 'Abaixo do peso',
@@ -23,12 +17,12 @@ const { alertDangerMessage,
 } = optionsMessage;
 
 const getOneValue = valueIndexImc =>
-  calculatedValueImc =>
-    calculatedValueImc < valueIndexImc;
+calculatedValueImc =>
+calculatedValueImc < valueIndexImc;
 
 const getBetweenValues = (valueIndexImcOne, valueIndexImcTwo) =>
-  calculatedValueImc =>
-    calculatedValueImc >= valueIndexImcOne && calculatedValueImc < valueIndexImcTwo;
+calculatedValueImc =>
+calculatedValueImc >= valueIndexImcOne && calculatedValueImc < valueIndexImcTwo;
 
 const informationsImc = [
   [getOneValue(18.5), underWeight],
@@ -43,28 +37,33 @@ const calculationImc = (weight, height) => weight / (height * height);
 
 const selectTheMessage = (weight, height) => informationsImc.find(([fn]) => fn(calculationImc(weight, height)))[1];
 
-console.log(selectTheMessage)
-
 const typeMessage = resultImc =>
-  Object.values(alertDangerMessage).includes(resultImc)
-    ? 'danger'
-    : 'warning';
+Object.values(alertDangerMessage).includes(resultImc)
+? 'danger'
+: 'warning';
 
 const resultMessage = resultImc =>
-  `<div class="alert alert-${resultImc === normalWeight ? 'primary' : typeMessage(resultImc)} text-center" role="alert">
-    ${resultImc}
-   `;
+`<div class="alert alert-${resultImc === normalWeight ? 'primary' : typeMessage(resultImc)} text-center" role="alert">
+${resultImc}
+`;
+
+const messageResult = document.querySelector('.messageResult');
 
 function insertResultMessageIntoDom(resultImc) {
   messageResult.innerHTML = '';
   messageResult.innerHTML = resultMessage(resultImc)
 }
 
+const inputHeight = document.querySelector('.altura');
+const inputWeight = document.querySelector('.peso');
+
 function resultImc() {
   const inputHeightValue = inputHeight.value;
   const inputWeightValue = inputWeight.value;
   insertResultMessageIntoDom(selectTheMessage(inputWeightValue, inputHeightValue));
 }
+
+const button = document.querySelector('.btn');
 
 button.addEventListener('click', resultImc);
 
